@@ -14,7 +14,7 @@ provider "aws" {
 
 
 data "aws_ssm_parameter" "ami_ubuntu" {
-  name = "aws ssm get-parameters --names /aws/service/canonical/ubuntu/server/resolute/stable/current/amd64/hvm/ebs-gp3/ami-id"
+  name = "/aws/service/canonical/ubuntu/server/resolute/stable/current/amd64/hvm/ebs-gp3/ami-id"
 }
 
 # Create an EC2 instance
