@@ -18,7 +18,7 @@ variable "region" {
 }
 
 variable "availability_zone" {
-    description = "eu-central-1a"
-    type = string
-    default = "eu-central-1a"
+  description = "eu-central-1a"
+  type        = string
+  default     = "eu-central-1a"
 }

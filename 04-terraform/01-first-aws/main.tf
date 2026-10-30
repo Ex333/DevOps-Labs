@@ -18,7 +18,14 @@ resource "aws_instance" "Server_Exx" {
   instance_type     = var.instance_type
   availability_zone = var.availability_zone
 
+  metadata_options {
+    http_endpoint = "enabled"
+    http_tokens   = "required"
+  }
+
   tags = {
-    Name = "Server Exx3"
+    Name        = "Server Exx3"
+    Environment = "dev"
+    Project     = "Ex3-DevOps"
   }
 }
