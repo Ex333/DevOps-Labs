@@ -10,3 +10,9 @@ variable "ami_id" {
     type = string
     default = "ami-0fa06da5547f46a7d"
 }
+
+variable "region" {
+    description = "Frankfurt EU"
+    type = string
+    default = "eu-central-1"
+}
