@@ -16,9 +16,9 @@ provider "aws" {
 resource "aws_instance" "Server_Exx" {
   ami               = var.ami_id
   instance_type     = var.instance_type
-  availability_zone = "eu-central-1a"
+  availability_zone = var.availability_zone
 
   tags = {
-    Name = "Server_Exx1231!!"
+    Name = "Server Exx3"
   }
 }
