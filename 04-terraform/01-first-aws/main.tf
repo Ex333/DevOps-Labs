@@ -14,7 +14,7 @@ provider "aws" {
 
 
 resource "aws_instance" "Server_Exx" {
-  ami               = "ami-0fa06da5547f46a7d"
+  ami               = var.ami_id
   instance_type     = var.instance_type
   availability_zone = "eu-central-1c"
 
