@@ -1,4 +1,4 @@
-# i  will declare the variable  here
+
 variable "instance_type" {
   description = "Moj EC2"
   type        = string
@@ -6,7 +6,7 @@ variable "instance_type" {
 }
 
 variable "ami_id" {
-  description = "ubuntu_ami_id"
+  description = "Ubuntu AMI ID"
   type        = string
   default     = "ami-0fa06da5547f46a7d"
 }
@@ -18,7 +18,12 @@ variable "region" {
 }
 
 variable "availability_zone" {
-  description = "eu-central-1a"
+  description = "Availability Zone"
   type        = string
   default     = "eu-central-1a"
+}
+
+variable "my_ip_cidr" {
+  description = "My public IP for SSH access"
+  type        = string
 }
