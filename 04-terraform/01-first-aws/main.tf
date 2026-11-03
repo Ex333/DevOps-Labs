@@ -59,6 +59,11 @@ resource "aws_instance" "moj_aws" {
 
   key_name = aws_key_pair.ex3_key.key_name
 
+  root_block_device {
+    volume_size = 30
+    volume_type = "gp3"
+  }
+
   vpc_security_group_ids = [
     aws_security_group.ssh_access.id
   ]
@@ -70,7 +75,7 @@ resource "aws_instance" "moj_aws" {
   }
 
   tags = {
-    Name        = "Server Ex3333"
+    Name        = "Ex3_EC2"
     Environment = "dev"
     Project     = "Ex3-DevOps"
   }
