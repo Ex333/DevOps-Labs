@@ -2,7 +2,7 @@
 variable "instance_type" {
   description = "Moj EC2"
   type        = string
-  default     = "t3.micro"
+  default     = "t3.small"
 }
 
 variable "ami_id" {

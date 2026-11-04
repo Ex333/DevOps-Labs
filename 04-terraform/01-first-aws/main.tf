@@ -35,7 +35,7 @@ resource "aws_security_group" "ssh_access" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-     cidr_blocks = ["0.0.0.0/0"]
+    cidr_blocks = ["0.0.0.0/0"]
   }
 
   # OUTBOUND - outgoing traffic
@@ -60,7 +60,7 @@ resource "aws_instance" "moj_aws" {
   key_name = aws_key_pair.ex3_key.key_name
 
   root_block_device {
-    volume_size = 30
+    volume_size = 40
     volume_type = "gp3"
   }
 
