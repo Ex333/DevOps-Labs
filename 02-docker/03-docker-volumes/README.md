@@ -1,101 +1,139 @@
-Docker Volumes - Visit Counter Lab
+# Docker Volumes – Visit Counter
 
-Goal
+A small Flask application running inside a Docker container. The application counts visits and stores the counter in a Docker named volume.
 
-The goal of this lab was to learn how Docker volumes work and how to keep application data persistent outside the container.
+## Project Overview
 
-I created a simple Flask application that counts how many times its main endpoint has been visited.
+The main purpose of this lab was to understand Docker volumes and learn how to store application data outside the container.
 
-What I did
+The application exposes two HTTP endpoints:
 
-Created a simple Flask application using Python.
+| Endpoint | Description |
+|---|---|
+| `/` | Increases the visit counter and returns the current value |
+| `/health` | Returns the application health status |
 
-Created a requirements.txt file with Flask as a dependency.
+## Project Structure
 
-Created a Dockerfile using python:3.13-slim as the base image.
+```text
+03-docker-volumes/
+├── app.py
+├── requirements.txt
+├── Dockerfile
+├── .dockerignore
+└── README.md
+```
 
-Installed the application dependencies during the image build.
+## Docker Configuration
 
-Created a separate Linux user called appuser.
+The Docker image is based on `python:3.13-slim`.
 
-Configured the container to run as appuser instead of root.
+During the image build, I configured:
 
-Created a directory /data inside the container for storing application data.
+- Python dependencies installation.
+- A separate Linux user called `appuser`.
+- Application files ownership using `COPY --chown`.
+- A dedicated `/data` directory.
+- Non-root execution using the `USER` instruction.
 
-Built a Docker image.
+The application runs as `appuser` instead of root.
 
-Created a named Docker volume called visit-data.
-
-Started a container and mounted the volume to /data.
-
-Docker Volume
+## Data Persistence
 
 The application stores the visit counter in:
 
+```text
 /data/visits.txt
+```
 
-The volume is mounted using:
+I created a Docker named volume called `visit-data` and mounted it to the `/data` directory inside the container.
 
--v visit-data:/data
+```text
+Host
+└── Docker Volume: visit-data
+    └── visits.txt
 
-This means that the application writes data inside the container, but Docker stores it in a named volume managed by Docker on the host.
+Container
+└── /data
+    └── visits.txt
+```
 
-To inspect the volume, I used:
+This allows the application to keep its data independently of the container lifecycle.
 
-docker volume inspect visit-data
-
-To check the files stored in the volume on the host:
-
-sudo ls -lah /var/lib/docker/volumes/visit-data/_data
-
-Running the application
+## Build and Run
 
 Build the Docker image:
 
+```bash
 docker build -t 03-docker-volumes-lab:v2 .
+```
 
 Create the named volume:
 
+```bash
 docker volume create visit-data
+```
 
-Run the container:
+Start the container:
 
+```bash
 docker run -d \
   --name 03_volume_container \
   -p 5000:5000 \
   -v visit-data:/data \
   03-docker-volumes-lab:v2
+```
 
-Testing
+## Testing
 
-I tested the application using curl:
+Check if the container is running:
 
+```bash
+docker ps
+```
+
+Check the application:
+
+```bash
+curl http://localhost:5000/health
+```
+
+Increase the visit counter:
+
+```bash
 curl http://localhost:5000/
+```
 
-Each request increases the visit counter.
+Check the stored counter inside the container:
 
-I also checked the stored value directly inside the container:
-
+```bash
 docker exec -it 03_volume_container cat /data/visits.txt
+```
 
-The file is created automatically when the application receives its first request.
+Inspect the Docker volume:
 
-What I learned
+```bash
+docker volume inspect visit-data
+```
 
-How Docker named volumes work.
+Check the volume files on the host:
 
-How to mount a volume inside a container.
+```bash
+sudo ls -lah /var/lib/docker/volumes/visit-data/_data
+```
 
-The difference between a container filesystem and persistent storage.
+## What I Learned
 
-Where Docker stores named volumes on the host.
+During this lab, I learned how to:
 
-How to inspect Docker volumes.
+- Build a Docker image using a Dockerfile.
+- Create and manage named Docker volumes.
+- Mount persistent storage inside a container.
+- Understand the difference between container storage and persistent storage.
+- Inspect Docker volumes and their host location.
+- Run containers using a non-root Linux user.
+- Manage file ownership and permissions inside containers.
 
-How to run a container as a non-root user.
+## Next Step
 
-How an application can store data in a persistent directory.
-
-Next step
-
-Test data persistence by removing the container, creating a new one with the same named volume and checking if the visit counter keeps its previous value.
+Test volume persistence by removing the container and starting a new one with the same named volume. The visit counter should keep its previous value.
